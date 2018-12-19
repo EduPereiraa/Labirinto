@@ -5,7 +5,7 @@
 
 char grelha[16][16];
 int posX=1;
-int posY=14;
+int posY=1;
 
 void preenche (char* file){ // gerar os campos do labirinto
 	int linha=0;
@@ -67,28 +67,28 @@ void controla_personagem (char controlo)    // (posX,posY) é a posição atual da 
 //Movimentos
 switch(controlo)
 {
-	case 's': if(grelha[posX+1][posY] != '#')
+	case 's': if(grelha[posX+1][posY] != '#')  // A posição inicial do labirinto é 1,1 e ao andar para baixo a personagem vai andar mais uma casa
 				{
 				grelha[posX][posY] = ' ';
 				posX++;  
 				grelha[posX][posY] = '@';
 				}
 				break;
-	case 'a':  if(grelha[posX][posY-1] != '#')
+	case 'a':  if(grelha[posX][posY-1] != '#') // Ao andar para a esquerda a personagem vai andar uma para casa para a esquerda daí ser -1
 				{
 				grelha[posX][posY] = ' ';
 				posY--;  
 				grelha[posX][posY] = '@';
 				}
 				 break;
-	case 'w':  if(grelha[posX-1][posY] != '#')
+	case 'w':  if(grelha[posX-1][posY] != '#') // Ao andar para cima a personagem vai andar uma casa para cima descendo na coordenada x daí ser -1
              	{
 		        grelha[posX][posY] = ' ';
 		        posX--;
 		        grelha[posX][posY] = '@';
              	}
              	 break;
-    case 'd':  if(grelha[posX][posY+1] != '#')
+    case 'd':  if(grelha[posX][posY+1] != '#') //Ao andar para a direita a personagem vai andar uma casa para a direita, subindo na coordenada y daí ser +1
 	            {
 	           	 grelha[posX][posY] = ' ';
 	           	 posY++;
@@ -99,15 +99,21 @@ switch(controlo)
 }
 }
 
+void ler_comando(){ 
+    char controlo;
+	printf("Introduza um movimento: \n");
+	scanf("%c", &controlo);
+	controla_personagem(controlo);
+}
+
 main () {
 	carrega("Labirinto.txt");
-	int i=16;
-	while(i>0){
+	int i=1000;
+	while(i--){
 		imprimeMapa();
 		printf("Posicao do Jogador: (%d,%d)\n",posX,posY);
-		//char c = lercomando();
-		controla_personagem('a');
-		i--;
+	    ler_comando();
+	
 	}
 }
 
