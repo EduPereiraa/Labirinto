@@ -2,11 +2,12 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include<math.h>
+#include<conio.h>
 
 char grelha[16][16];
 int posX=1;
 int posY=1;
-
 
 void preenche (char* file){ // gerar os campos do labirinto
 	int linha=0;
@@ -50,8 +51,10 @@ void carrega (char* ficheiro){  //abrir o labirinto previamente gerado pelo bloc
 	fclose(fp);
 }
 
-void imprimeMapa(){
+void imprimeMapa(int pontos){
 	int i,j,dim;
+	system("cls");
+    printf("Pontos: %d\n",pontos);
 	for (i=0;i<16;i++)
 	{
 		for (j=0;j<16;j++)
@@ -117,13 +120,12 @@ switch(controlo)
 	}
 return pontos;
 }
-
 char ler_comando()
 { 
-    
+    char a,s,d,w;
     char controlo;
-    printf("Introduza um movimento: \n");
-	scanf("%c", &controlo);
+	controlo = getch();
+	
 	return controlo;
 }
 
@@ -134,17 +136,15 @@ main ()
 	int i=0;
 	while(1)
 	    {
-	    printf("Pontos: %d\n",pontos);
-		imprimeMapa();
+		imprimeMapa(pontos);
 		printf("Posicao do Jogador: (%d,%d)\n",posX,posY);
-	    char controlo='f';
+	    char controlo='f'; 
 	    while(controlo != 'a' && controlo != 's' && controlo!= 'd' && controlo != 'w' && controlo!='\0')
 	    {
 	    	controlo = ler_comando();
 		}
 	    pontos = controla_personagem(controlo, pontos);
 	    }
-	   
 }
 
 
