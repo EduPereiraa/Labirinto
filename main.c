@@ -11,11 +11,9 @@
 
 
 
-int posX=1;
-int posY=1;
 
 
-void preenche (char* file, char grelha [maxX][maxY]){ // gerar os campos do labirinto
+void preenche (char* file, char grelha [maxX][maxY], int posicao[2]){ // gerar os campos do labirinto
 	int linha=0;
 	int coluna=0;
 	int iterador=0;
@@ -32,11 +30,11 @@ void preenche (char* file, char grelha [maxX][maxY]){ // gerar os campos do labi
 		}
 		iterador++;
 	}
-	grelha[posX][posY]='@';
+	grelha[posicao[0]][posicao[1]]='@';
 	
 }
 
-void carrega (char *ficheiro, char grelha [maxX][maxY]){  //abrir o labirinto previamente gerado pelo bloco de notas
+void carrega (char *ficheiro, char grelha [maxX][maxY], int posicao[2]){  //abrir o labirinto previamente gerado pelo bloco de notas
 	char labirinto[1000];
 	FILE *fp = fopen(ficheiro,"r");
 	
@@ -54,11 +52,11 @@ void carrega (char *ficheiro, char grelha [maxX][maxY]){  //abrir o labirinto pr
 	labirinto[i]='\0';
 	
     
-	preenche(labirinto, grelha); //atribuir o labirinto gerado no bloco de notas ao preenchimento do labirinto
+	preenche(labirinto, grelha, posicao); //atribuir o labirinto gerado no bloco de notas ao preenchimento do labirinto
 	fclose(fp);
 }
 
-void imprimeMapa(int pontos, char grelha [maxX][maxY], int posicao_atual_m1[2], int posX, int posY){
+void imprimeMapa(int pontos, char grelha [maxX][maxY], int posicao_atual_m1[2], int posicao[2]){
 	int i,j,dim;
 	system("cls");
     printf("Pontos: %d\n",pontos);
@@ -68,67 +66,67 @@ void imprimeMapa(int pontos, char grelha [maxX][maxY], int posicao_atual_m1[2], 
 		
 			printf("%c",grelha[i][j]);
 			if (j==17) printf("\n");
-			if(i == 0 || i == (dim-1) || j == 0 || j == (dim-1))
-                   grelha[i][j] = '#'; 
+//			if(i == 0 || i == (dim-1) || j == 0 || j == (dim-1))
+//                 grelha[i][j] = '#'; 
 	}
-	printf("Posicao do Jogador: (%d,%d)\n",posX,posY);
+	printf("Posicao do Jogador: (%d,%d)\n", posicao[0], posicao[1]);
 }
 
 
 
-int controla_personagem (char controlo, int pontos, char grelha [maxX][maxY], int posX, int posY, int, posicao_atual_m1)    // (posX,posY) é a posição atual da personagem
+int controla_personagem (char controlo, int pontos, char grelha [maxX][maxY], int posicao[2], int posicao_atual_m1[2])    // (posX,posY) é a posição atual da personagem
 {
 												          
 //Movimentos
 switch(controlo)
 {
-	case 's': if(grelha[posX+1][posY] != '#')  // A posição inicial do labirinto é 1,1 e ao andar para baixo a personagem vai andar mais uma casa
+	case 's': if(grelha[posicao[0]+1][posicao[1]] != '#')  // A posição inicial do labirinto é 1,1 e ao andar para baixo a personagem vai andar mais uma casa
 				{
-				if(grelha[posX+1][posY] == '*')
+				if(grelha[posicao[0]+1][posicao[1]] == '*')
 				{
 					pontos++;
 				}
-				grelha[posX][posY] = ' ';
-				posX++;  
-				grelha[posX][posY] = '@';
-				imprimeMapa(pontos, grelha,posicao_atual_m1, posX,posY);
+				grelha[posicao[0]][posicao[1]] = ' ';
+				posicao[0]++;  
+				grelha[posicao[0]][posicao[1]] = '@';
+				imprimeMapa(pontos, grelha, posicao_atual_m1,posicao);
 				}
 				break;
-	case 'a':  if(grelha[posX][posY-1] != '#') // Ao andar para a esquerda a personagem vai andar uma para casa para a esquerda daí ser -1
+	case 'a':  if(grelha[posicao[0]][posicao[1]-1] != '#') // Ao andar para a esquerda a personagem vai andar uma para casa para a esquerda daí ser -1
 				{
-				if(grelha[posX][posY-1] == '*')
+				if(grelha[posicao[0]][posicao[1]-1] == '*')
 				{
 					pontos++;
 				}
-				grelha[posX][posY] = ' ';
-				posY--;  
-				grelha[posX][posY] = '@';
-				imprimeMapa(pontos, grelha);
+				grelha[posicao[0]][posicao[1]] = ' ';
+				posicao[1]--;  
+				grelha[posicao[0]][posicao[1]] = '@';
+				imprimeMapa(pontos, grelha,posicao_atual_m1, posicao);
 				}
 				 break;
-	case 'w':  if(grelha[posX-1][posY] != '#') // Ao andar para cima a personagem vai andar uma casa para cima descendo na coordenada x daí ser -1
+	case 'w':  if(grelha[posicao[0]-1][posicao[1]] != '#') // Ao andar para cima a personagem vai andar uma casa para cima descendo na coordenada x daí ser -1
              	{
-             	if(grelha[posX-1][posY] == '*')
+             	if(grelha[posicao[0]-1][posicao[1]] == '*')
              	{
              		pontos++;
 				}
-		        grelha[posX][posY] = ' ';
-		        posX--;
-		        grelha[posX][posY] = '@';
-				imprimeMapa(pontos, grelha);
+		        grelha[posicao[0]][posicao[1]] = ' ';
+		        posicao[0]--;
+		        grelha[posicao[0]][posicao[1]] = '@';
+				imprimeMapa(pontos, grelha, posicao_atual_m1, posicao);
              	}
              	 break;
-    case 'd':	if(grelha[posX][posY+1] != '#') //Ao andar para a direita a personagem vai andar uma casa para a direita, subindo na coordenada y daí ser +1
+    case 'd':	if(grelha[posicao[0]][posicao[1]+1] != '#') //Ao andar para a direita a personagem vai andar uma casa para a direita, subindo na coordenada y daí ser +1
 	    		{
-	            if(grelha[posX][posY+1] == '*')
+	            if(grelha[posicao[0]][posicao[1]+1] == '*')
 	            {
 	            	pontos++;
 				}
 				
-	           	grelha[posX][posY] = ' ';
-	           	posY++;
-	           	grelha[posX][posY] = '@';
-				imprimeMapa(pontos, grelha);
+	           	grelha[posicao[0]][posicao[1]] = ' ';
+	           	posicao[1]++;
+	           	grelha[posicao[0]][posicao[1]] = '@';
+				imprimeMapa(pontos, grelha, posicao_atual_m1, posicao);
 			    }       
 			    break;
 	}
@@ -207,16 +205,19 @@ main ()
 {
 	int pontos=0;
 	int linhas=17,colunas=17;
+	int posicao[2]={1,1};
 	int posicao_memoria_m1[2]={0,0}, posicao_atual_m1[2];
 	char grelha[maxX][maxY], controlo=1;
-	carrega("Labirinto.txt", grelha);
+	carrega("Labirinto.txt", grelha, posicao);
 	int i=0;
+
+
 
 	while(posicao_atual_m1[0]!=1 && posicao_atual_m1[1]!=1){
 	posicao_atual_m1[0] = rand() % linhas;
 	posicao_atual_m1[1] = rand() % colunas;
 	}
-	imprimeMapa(pontos, grelha, posicao_atual_m1);
+	imprimeMapa(pontos, grelha, posicao_atual_m1, posicao);
 	do{
 
 	     
@@ -232,7 +233,7 @@ main ()
 		
 		else{
 			controlo_inimigos(grelha,linhas,colunas,posicao_atual_m1,posicao_memoria_m1);
-			pontos = controla_personagem(controlo, pontos, grelha);
+			pontos = controla_personagem(controlo, pontos, grelha,posicao, posicao_atual_m1);
 		}
 	    controlo = getch();
 	}while(2);
