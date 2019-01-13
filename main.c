@@ -12,8 +12,9 @@
 
 
 
-
-void preenche (char* file, char grelha [maxX][maxY], int posicao[2]){ // gerar os campos do labirinto
+// Esta função serve para preencher o labirinto com linhas e colunas, sendo que quando o número de colunas desejadas for alcançado
+// é começado a preencher-se as colunas numa nova linha
+void preenche (char* file, char grelha [maxX][maxY], int posicao[2]){ 
 	int linha=0;
 	int coluna=0;
 	int iterador=0;
@@ -32,7 +33,9 @@ void preenche (char* file, char grelha [maxX][maxY], int posicao[2]){ // gerar o
 	}
 }
 
-void carrega (char *ficheiro, char grelha [maxX][maxY], int posicao[2]){  //abrir o labirinto previamente gerado pelo bloco de notas
+// Esta função serve para ir buscar ao bloco de notas, o labirinto previamente gerado.
+// No fim convoca-se a função preencher para preencher o labirinto com as linhas e colunas desejadas
+void carrega (char *ficheiro, char grelha [maxX][maxY], int posicao[2]){  
 	char labirinto[1000];
 	FILE *fp = fopen(ficheiro,"r");
 	
@@ -50,10 +53,12 @@ void carrega (char *ficheiro, char grelha [maxX][maxY], int posicao[2]){  //abri
 	labirinto[i]='\0';
 	
     
-	preenche(labirinto, grelha, posicao); //atribuir o labirinto gerado no bloco de notas ao preenchimento do labirinto
+	preenche(labirinto, grelha, posicao); 
 	fclose(fp);
 }
-
+// Nesta função nós pegamos na situação atual do jogo e criamos um novo ficheiro que guarda a nossa posição,
+// assim como as posições dos 4 monstros por nós criados. Usamos o sprintf para ler o inteiro numa string, ou seja, neste caso, para converter
+// um inteiro numa string e no fim utilizamos o strcat para unir as variáveis inteiras com a string
 void gravar_jogo (char *ficheiro, char grelha [maxX][maxY], int posicao[2],int posicao_atual_m1[2],int posicao_atual_m2[2],int posicao_atual_m3[2],int posicao_atual_m4[2]){  //abrir o labirinto previamente gerado pelo bloco de notas
 	char labirinto[1000];
 	FILE* gravar = fopen(ficheiro,"w");
@@ -127,6 +132,12 @@ void gravar_jogo (char *ficheiro, char grelha [maxX][maxY], int posicao[2],int p
   printf("Dados gravados com sucesso!\n");
 }
 
+int toNumero (char *string){
+	return atoi(string);
+}
+// Esta função serve para carregar os dados anteriormente guardados por nós de modo a continuar o jogo na posição que ficou registada.
+// Isto implicou guardar as posições da nossa personagem e dos monstros, assim como os pontos que estavam já alcançados 
+// e registar as posições que iam ficar no ficheiro de jogo guardado sendo que testamos para a posição 17 a 26
 int load (char *ficheiro,char grelha[maxX][maxY],int posicao[2],int posicao_atual_m1[2],int posicao_atual_m2[2],int posicao_atual_m3[2],int posicao_atual_m4[2]){
 	char labirinto[1000];
 	int pontos=483;
@@ -138,44 +149,92 @@ int load (char *ficheiro,char grelha[maxX][maxY],int posicao[2],int posicao_atua
 		return;
 	}
 	else{
-		int k;
+		int k=0;
 		char c;
 		int i=0;
 		int j=0;
-		char posicaoJX[2],posicaoJY[2],posicaoM1X[2],posicaoM1Y[2],posicaoM2X[2],posicaoM2Y[2],posicaoM3X[2],posicaoM3Y[2],posicaoM4X[2],posicaoM4Y[2];
+		int pos=0;
+		char posicaoJX[3],posicaoJY[3],posicaoM1X[3],posicaoM1Y[3],posicaoM2X[3],posicaoM2Y[3],posicaoM3X[3],posicaoM3Y[3],posicaoM4X[3],posicaoM4Y[3];
 		while(fscanf(jogo,"%c",&c)!=EOF){
     		labirinto[k]=c;    		
-			if(labirinto[k]=='\n') i++;
+			if(labirinto[k]=='\n') {
+				i++;
+				pos=0;
+			}
 			else if (i<17){
 			 grelha[i][j]=labirinto[k];
 			 if(labirinto[k]=='*') pontos--;
 			 j++;
 		 	if (j==47) j=0;
 			}
-			if (i==17) strcat(posicaoJX,&labirinto[c]);
-			if (i==18) strcat(posicaoJY,&labirinto[c]);
-			if (i==19) strcat(posicaoM1X,&labirinto[c]);
-			if (i==20) strcat(posicaoM1Y,&labirinto[c]);
-			if (i==21) strcat(posicaoM2X,&labirinto[c]);
-			if (i==22) strcat(posicaoM2Y,&labirinto[c]);
-			if (i==23) strcat(posicaoM3X,&labirinto[c]);
-			if (i==24) strcat(posicaoM3Y,&labirinto[c]);
-			if (i==25) strcat(posicaoM4X,&labirinto[c]);
-			if (i==26) strcat(posicaoM4Y,&labirinto[c]);
+			else if (i==17) {
+				posicaoJX[pos]=labirinto[k];
+				pos++;
+			}
+			else if (i==18) {
+				posicaoJY[pos]=labirinto[k];
+				pos++;
+			}
+			else if (i==19) {
+				posicaoM1X[pos]=labirinto[k];
+				pos++;
+			}
+			else if (i==20) {
+				posicaoM1Y[pos]=labirinto[k];
+				pos++;
+			}
+			else if (i==21) {
+				posicaoM2X[pos]=labirinto[k];
+				pos++;
+			}
+			else if (i==22) {
+				posicaoM2Y[pos]=labirinto[k];
+				pos++;
+			}
+			else if (i==23) {
+				posicaoM3X[pos]=labirinto[k];
+				pos++;
+			}
+			else if (i==24) {
+				posicaoM3Y[pos]=labirinto[k];
+				pos++;
+			}
+			else if (i==25) {
+				posicaoM4X[pos]=labirinto[k];
+				pos++;
+			}
+			else if (i==26) {
+				posicaoM4Y[pos]=labirinto[k];
+				pos++;
+			}
+			
 			k++;
 			
 		}
+	    
+	    posicao[0]=toNumero(posicaoJX);
+	    posicao[1]=toNumero(posicaoJY);
+	    posicao_atual_m1[0]=toNumero(posicaoM1X);
+	    posicao_atual_m1[1]=toNumero(posicaoM1Y);
+	    posicao_atual_m2[0]=toNumero(posicaoM2X);
+	    posicao_atual_m2[1]=toNumero(posicaoM2Y);
+	    posicao_atual_m3[0]=toNumero(posicaoM3X);
+	    posicao_atual_m3[1]=toNumero(posicaoM3Y);
+	    posicao_atual_m4[0]=toNumero(posicaoM4X);
+	    posicao_atual_m4[1]=toNumero(posicaoM4Y);
 	    
 		fclose(jogo);
 	}
 	return pontos;
 }
 
+// Esta função é a função que define o número de linhas e de colunas que o labirinto vai ter. É nesta função que temos as regras e as instruções do jogo,
+// assim como o inserir da nossa personagem e dos monstros que a seguem. Também temos sempre indicada a posição atual do jogador.
 void imprimeMapa(int pontos, char grelha [maxX][maxY], int posicao_atual_m1[2],int posicao_atual_m2[2],int posicao_atual_m3[2],int posicao_atual_m4[2], int posicao[2]){
 	int i,j,dim;
-	//system("cls");
+	system("cls");
 	printf("Regras do Jogo: Evitar ser apanhado pelos monstros e apanhar todos os pontos\n");
-	printf("ATENCAO!---> Monstros: &\n");
+	printf("ATENCAO!---> Monstros: &--B--$--?d\n");
     printf("Pontos: %d\n",pontos);
     
 	for (i=0;i<17;i++)
@@ -204,7 +263,8 @@ void imprimeMapa(int pontos, char grelha [maxX][maxY], int posicao_atual_m1[2],i
 	printf("\n Instrucoes do jogo: \n W: Movimento para cima\n A: Movimento para a esquerda\n S: Movimento para baixo\n D: Movimento para a direita \n G: Gravar o jogo \n C: Carregar o jogo\n");
 }
 
-
+// Esta função é a função que controla os monstros. Os monstros verificam a posição atual do jogador e caso seja maior ou menor
+// vão fazer um conjunto de movimentos que seguem de encontro ao nosso jogador tendo como objetivo alcançar a mesma posição, acabando assim o jogo.
 void controlo_inimigos(char grelha [maxX][maxY], int linhas, int colunas, int posicao_monstro[2], int posicao[2]){
 	
 	if (posicao_monstro[0]>posicao[0]){
@@ -251,7 +311,8 @@ void controlo_inimigos(char grelha [maxX][maxY], int linhas, int colunas, int po
 	}
 }
 
-
+// Esta função é a função que controla a nossa personagem, caso a tecla premida seja a,s,d e w.
+// A função testa verifica se tem obstáculo ou se tem pontos à frente e caso seja obstáculo, nada acontece, caso seja ponto, soma um ao contador.
 int controla_personagem (char controlo, int pontos, char grelha [maxX][maxY], int posicao[2], int posicao_atual_m1[2], int posicao_atual_m2[2],int posicao_atual_m3[2],int posicao_atual_m4[2],int linhas, int colunas)    // (posX,posY) é a posição atual da personagem
 {
 												          
@@ -307,7 +368,9 @@ switch(controlo)
 return pontos;
 }
 
-
+// Na função main temos definido as posições iniciais dos monstros e de seguida imprimimos o mapa já com tudo preenchido e adicionamos
+// as funções de carregar e de gravar o jogo, assim como adicionamos uma das partes crucias do jogo, em que, se os monstros atingirem 
+// a posição do jogador, o jogo acaba não sendo possível retomar o jogo, a não ser que esteja gravado.
 main()
 {
 	int pontos=0;
