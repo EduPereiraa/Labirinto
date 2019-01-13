@@ -233,8 +233,9 @@ int load (char *ficheiro,char grelha[maxX][maxY],int posicao[2],int posicao_atua
 void imprimeMapa(int pontos, char grelha [maxX][maxY], int posicao_atual_m1[2],int posicao_atual_m2[2],int posicao_atual_m3[2],int posicao_atual_m4[2], int posicao[2]){
 	int i,j,dim;
 	system("cls");
-	printf("Regras do Jogo: Evitar ser apanhado pelos monstros e apanhar todos os pontos\n");
-	printf("ATENCAO!---> Monstros: &--B--$--?d\n");
+	printf("                                                 BEM VINDO AO PAC-MAN\n");
+	printf("Regras do Jogo: Evitar ser apanhado pelos monstros e apanhar todos os pontos----> ATENCAO!---> Monstros: &--B--$--?d\n");
+	
     printf("Pontos: %d\n",pontos);
     
 	for (i=0;i<17;i++)
