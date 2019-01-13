@@ -6,8 +6,8 @@
 #include<conio.h>
 #include<time.h>
 
-#define maxX 17
-#define maxY 47
+#define maxX 17   //o mapa tem 17 linhas
+#define maxY 47   // e 47 colunas
 
 
 
@@ -234,7 +234,7 @@ void imprimeMapa(int pontos, char grelha [maxX][maxY], int posicao_atual_m1[2],i
 	int i,j,dim;
 	system("cls");
 	printf("                                                 BEM VINDO AO PAC-MAN\n");
-	printf("Regras do Jogo: Evitar ser apanhado pelos monstros e apanhar todos os pontos----> ATENCAO!---> Monstros: &--B--$--?d\n");
+	printf("Regras do Jogo: Evitar ser apanhado pelos monstros e apanhar todos os pontos----> ATENCAO!---> Monstros: &--B--$--?\n");
 	
     printf("Pontos: %d\n",pontos);
     
@@ -261,7 +261,7 @@ void imprimeMapa(int pontos, char grelha [maxX][maxY], int posicao_atual_m1[2],i
 			if (j==47) printf("\n");
 	}
 	printf("Posicao do Jogador: (%d,%d)\n", posicao[0], posicao[1]);
-	printf("\n Instrucoes do jogo: \n W: Movimento para cima\n A: Movimento para a esquerda\n S: Movimento para baixo\n D: Movimento para a direita \n G: Gravar o jogo \n C: Carregar o jogo\n");
+	printf("\n Instrucoes do jogo: \n W: Movimento para cima\n A: Movimento para a esquerda\n S: Movimento para baixo\n D: Movimento para a direita \n G: Gravar o jogo \n C: Carregar o jogo\n\n");
 }
 
 // Esta função é a função que controla os monstros. Os monstros verificam a posição atual do jogador e caso seja maior ou menor
@@ -407,7 +407,7 @@ main()
 					|| (posicao_atual_m2[0]==posicao[0] && posicao_atual_m2[1]==posicao[1])
 					|| (posicao_atual_m3[0]==posicao[0] && posicao_atual_m3[1]==posicao[1])
 					|| (posicao_atual_m4[0]==posicao[0] && posicao_atual_m4[1]==posicao[1])){
-					printf("GAME OVER\n");
+					printf("GAME OVER!!!\n");
 					break;
 				}
 				if(pontos==483){
